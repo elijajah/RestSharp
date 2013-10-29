@@ -41,7 +41,7 @@ namespace RestSharp
 		/// </summary>
 		public RestClient()
 		{
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE && !WP8
 			UseSynchronizationContext = true;
 #endif
 			ContentHandlers = new Dictionary<string, IDeserializer>();
