@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-#if NET4 || MONODROID || MONOTOUCH
+#if NET4 || WP8 || MONODROID || MONOTOUCH
 using System.Threading.Tasks;
 #endif
 using System.Text;
@@ -158,8 +158,8 @@ namespace RestSharp
 			callback(restResponse, asyncHandle);
 		}
 
-#if NET4 || MONODROID || MONOTOUCH
-		/// <summary>
+#if NET4 || WP8 || MONODROID || MONOTOUCH
+        /// <summary>
 		/// Executes a GET-style request asynchronously, authenticating if needed
 		/// </summary>
 		/// <typeparam name="T">Target deserialization type</typeparam>
@@ -236,7 +236,7 @@ namespace RestSharp
 				throw new ArgumentNullException("request");
 			}
 
-			var taskCompletionSource = new TaskCompletionSource<IRestResponse<T>>();
+            var taskCompletionSource = new TaskCompletionSource<IRestResponse<T>>(TaskContinuationOptions.HideScheduler);
 
 			try
 			{
@@ -345,7 +345,7 @@ namespace RestSharp
 				throw new ArgumentNullException("request");
 			}
 
-			var taskCompletionSource = new TaskCompletionSource<IRestResponse>();
+            var taskCompletionSource = new TaskCompletionSource<IRestResponse>(TaskContinuationOptions.HideScheduler);
 
 			try
 			{

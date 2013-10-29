@@ -144,7 +144,7 @@ namespace RestSharp
 			{
 				ExecuteCallback(CreateErrorResponse(ex), callback);
 			}
-			
+	
 			return webRequest;
 		}
 
@@ -155,7 +155,7 @@ namespace RestSharp
 
 			if (HasBody || HasFiles || AlwaysMultipartFormData)
 			{
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE || WP8
 				webRequest.ContentLength = CalculateContentLength();
 #endif
 				asyncResult = webRequest.BeginGetRequestStream(result => RequestStreamCallback(result, callback), webRequest);
@@ -238,7 +238,7 @@ namespace RestSharp
 
 		private void SetTimeout(IAsyncResult asyncResult, TimeOutState timeOutState)
 		{
-#if FRAMEWORK
+#if FRAMEWORK || WP8
 			if (Timeout != 0)
 			{
 				ThreadPool.RegisterWaitForSingleObject(asyncResult.AsyncWaitHandle, new WaitOrTimerCallback(TimeoutCallback), timeOutState, Timeout, true);
@@ -343,7 +343,7 @@ namespace RestSharp
 #if SILVERLIGHT
 			_restrictedHeaderActions.Add("Content-Length", (r, v) => r.ContentLength = Convert.ToInt64(v));
 #endif
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE && !WP8
 			// WP7 doesn't as of Beta doesn't support a way to set Content-Length either directly
 			// or indirectly
 			_restrictedHeaderActions.Add("Content-Length", (r, v) => { });
@@ -365,7 +365,7 @@ namespace RestSharp
 			webRequest.Method = method;
 
 			// make sure Content-Length header is always sent since default is -1
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE || WP8
 			// WP7 doesn't as of Beta doesn't support a way to set this value either directly
 			// or indirectly
 			if(!HasFiles && !AlwaysMultipartFormData)
