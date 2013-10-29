@@ -19,53 +19,54 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace RestSharp
 {
-	public interface IHttp
-	{
-		Action<Stream> ResponseWriter { get; set; }
-		CookieContainer CookieContainer { get; set; }
-		ICredentials Credentials { get; set; }
+    public interface IHttp
+    {
+        Action<Stream> ResponseWriter { get; set; }
+        CookieContainer CookieContainer { get; set; }
+        ICredentials Credentials { get; set; }
 
-		/// <summary>
-		/// Always send a multipart/form-data request - even when no Files are present.
-		/// </summary>
-		bool AlwaysMultipartFormData { get; set; }
+        /// <summary>
+        /// Always send a multipart/form-data request - even when no Files are present.
+        /// </summary>
+        bool AlwaysMultipartFormData { get; set; }
 
-		string UserAgent { get; set; }
-		int Timeout { get; set; }
+        string UserAgent { get; set; }
+        int Timeout { get; set; }
 #if !SILVERLIGHT
-		bool FollowRedirects { get; set; }
+        bool FollowRedirects { get; set; }
 #endif
 #if FRAMEWORK
 		X509CertificateCollection ClientCertificates { get; set; }
 		int? MaxRedirects { get; set; }
 #endif
 
-		IList<HttpHeader> Headers { get; }
-		IList<HttpParameter> Parameters { get; }
-		IList<HttpFile> Files { get; }
-		IList<HttpCookie> Cookies { get; }
-		string RequestBody { get; set; }
-		string RequestContentType { get; set; }
+        IList<HttpHeader> Headers { get; }
+        IList<HttpParameter> Parameters { get; }
+        IList<HttpFile> Files { get; }
+        IList<HttpCookie> Cookies { get; }
+        string RequestBody { get; set; }
+        string RequestContentType { get; set; }
 
-		/// <summary>
-		/// An alternative to RequestBody, for when the caller already has the byte array.
-		/// </summary>
-		byte[] RequestBodyBytes { get; set; }
+        /// <summary>
+        /// An alternative to RequestBody, for when the caller already has the byte array.
+        /// </summary>
+        byte[] RequestBodyBytes { get; set; }
 
-		Uri Url { get; set; }
+        Uri Url { get; set; }
 
-		HttpWebRequest DeleteAsync(Action<HttpResponse> action);
-		HttpWebRequest GetAsync(Action<HttpResponse> action);
-		HttpWebRequest HeadAsync(Action<HttpResponse> action);
-		HttpWebRequest OptionsAsync(Action<HttpResponse> action);
-		HttpWebRequest PostAsync(Action<HttpResponse> action);
-		HttpWebRequest PutAsync(Action<HttpResponse> action);
-		HttpWebRequest PatchAsync(Action<HttpResponse> action);
-		HttpWebRequest AsPostAsync(Action<HttpResponse> action, string httpMethod);
-		HttpWebRequest AsGetAsync(Action<HttpResponse> action, string httpMethod);
+        Task<HttpResponse> DeleteAsync();
+        Task<HttpResponse> GetAsync();
+        Task<HttpResponse> HeadAsync();
+        Task<HttpResponse> OptionsAsync();
+        Task<HttpResponse> PostAsync();
+        Task<HttpResponse> PutAsync();
+        Task<HttpResponse> PatchAsync();
+        Task<HttpResponse> AsPostAsync(string httpMethod);
+        Task<HttpResponse> AsGetAsync(string httpMethod);
 
 #if FRAMEWORK
 		HttpResponse Delete();
@@ -80,5 +81,5 @@ namespace RestSharp
 
 		IWebProxy Proxy { get; set; }
 #endif
-	}
+    }
 }
