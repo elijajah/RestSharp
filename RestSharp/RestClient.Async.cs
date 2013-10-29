@@ -236,7 +236,7 @@ namespace RestSharp
 				throw new ArgumentNullException("request");
 			}
 
-			var taskCompletionSource = new TaskCompletionSource<IRestResponse<T>>();
+            var taskCompletionSource = new TaskCompletionSource<IRestResponse<T>>(TaskContinuationOptions.HideScheduler);
 
 			try
 			{
@@ -345,7 +345,7 @@ namespace RestSharp
 				throw new ArgumentNullException("request");
 			}
 
-			var taskCompletionSource = new TaskCompletionSource<IRestResponse>();
+            var taskCompletionSource = new TaskCompletionSource<IRestResponse>(TaskContinuationOptions.HideScheduler);
 
 			try
 			{
